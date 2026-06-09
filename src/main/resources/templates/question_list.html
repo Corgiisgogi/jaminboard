@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+th:replace="~{layout :: layout(~{::section})}">
+
+<section class="container my-3">
+	<div class="d-flex justify-content-between align-items-center mb-3">
+		<h2>수업 질문 게시판</h2>
+		<a th:href="@{/question/create}" class="btn btn-primary">질문 등록하기</a>
+	</div>
+	<table class="table table-bordered table-hover text-center">
+		<thead class="table-dark">
+			<tr>
+				<th>번호</th>
+				<th>제목</th>
+				<th>작성일</th>
+				<th>답변 개수</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:if="${#lists.isEmpty(questionList)}">
+				<td colspan="4">등록된 게시글이 없습니다.</td>
+			</tr>
+			<tr th:each="question, loop : ${questionList}">
+				<td th:text="${loop.count}"></td>
+				<td class="text-start">
+					<a th:href="@{|/question/detail/${question.id}|}" th:text="${question.subject}"></a>
+				</td>
+				<td th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}"></td>
+				<td th:text="${#lists.size(question.answerList)}"></td>
+			</tr>
+		</tbody>
+	</table>
+
+</section>
+
+</html>

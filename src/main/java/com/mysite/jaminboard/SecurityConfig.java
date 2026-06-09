@@ -22,7 +22,7 @@ public class SecurityConfig {
 				.requestMatchers(PathRequest.toH2Console()).permitAll()
 				.requestMatchers(
 						"/", "/question/list", "/question/detail/**",
-						"/bootstrap.min.css", "/style.css",
+						"/bootstrap.min.css", "/style.css", "/error",
 						"/user/signup", "/user/login", "/admin/login").permitAll()
 				.requestMatchers("/admin/**").hasRole("ADMIN")
 				.requestMatchers("/answer/**").hasRole("ADMIN")

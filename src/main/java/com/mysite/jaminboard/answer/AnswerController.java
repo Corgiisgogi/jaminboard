@@ -1,7 +1,8 @@
 package com.mysite.jaminboard.answer;
 
+import java.security.Principal;
+
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mysite.jaminboard.question.Question;
 import com.mysite.jaminboard.question.QuestionService;
+import com.mysite.jaminboard.user.SiteUser;
+import com.mysite.jaminboard.user.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,12 +22,14 @@ public class AnswerController {
 
 	private final QuestionService questionService;
 	private final AnswerService answerService;
+	private final UserService userService;
 
 	@PostMapping("/create/{id}")
-	public String createAnswer(Model model, @PathVariable("id") Integer id,
-			@RequestParam(value = "content") String content) {
+	public String createAnswer(@PathVariable("id") Integer id, @RequestParam("content") String content,
+			Principal principal) {
 		Question question = this.questionService.getQuestion(id);
-		this.answerService.create(question, content);
+		SiteUser author = this.userService.getUser(principal.getName());
+		this.answerService.create(question, content, author);
 		return String.format("redirect:/question/detail/%s", id);
 	}
 }

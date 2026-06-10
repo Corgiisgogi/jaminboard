@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+th:replace="~{layout :: layout(~{::section})}">
+
+<section class="container my-3" style="max-width: 720px;">
+	<h2 class="border-bottom py-2">답변 수정</h2>
+	<form th:action="@{|/answer/modify/${answer.id}|}" method="post">
+		<div class="mb-3">
+			<label for="content" class="form-label">답변 내용</label>
+			<textarea name="content" id="content" class="form-control" rows="8" th:text="${answer.content}" required></textarea>
+		</div>
+		<button type="submit" class="btn btn-primary">저장하기</button>
+		<a th:href="@{|/question/detail/${answer.question.id}|}" class="btn btn-secondary">취소</a>
+	</form>
+</section>
+
+</html>

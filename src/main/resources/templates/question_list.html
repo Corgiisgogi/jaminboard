@@ -23,24 +23,26 @@ th:replace="~{layout :: layout(~{::section})}">
 			<tr th:if="${#lists.isEmpty(questionList)}">
 				<td colspan="7">등록된 게시글이 없습니다.</td>
 			</tr>
-			<tr th:each="question, loop : ${questionList}">
+			<!-- 열람 가능: 공개글 이거나, 관리자 이거나, 작성자 본인 -->
+			<tr th:each="question, loop : ${questionList}"
+				th:with="canView=${!question.secret or isAdmin or (loginUser != null and question.author != null and loginUser.username == question.author.username)}">
 				<td th:text="${loop.count}"></td>
 				<td class="text-start">
-					<!-- 열람 가능: 공개글 이거나, 관리자 이거나, 작성자 본인 -->
-					<th:block th:with="canView=${!question.secret or isAdmin or (loginUser != null and question.author != null and loginUser.username == question.author.username)}">
-						<a th:if="${canView}" th:href="@{|/question/detail/${question.id}|}">
-							<span th:if="${question.secret}">🔒 </span>
-							<span th:text="${question.subject}"></span>
-						</a>
-						<span th:unless="${canView}" class="text-muted">🔒 비밀글입니다</span>
-					</th:block>
+					<a th:if="${canView}" th:href="@{|/question/detail/${question.id}|}">
+						<span th:if="${question.secret}">🔒 </span>
+						<span th:text="${question.subject}"></span>
+					</a>
+					<span th:unless="${canView}" class="text-muted">🔒 비밀글입니다</span>
 				</td>
-				<td th:text="${question.equipmentName}"></td>
-				<td th:text="${question.occurredDate != null ? #temporals.format(question.occurredDate, 'yyyy-MM-dd') : '-'}"></td>
+				<td th:if="${canView}" th:text="${question.equipmentName}"></td>
+				<td th:unless="${canView}" class="text-muted">비공개</td>
+				<td th:if="${canView}" th:text="${question.occurredDate != null ? #temporals.format(question.occurredDate, 'yyyy-MM-dd') : '-'}"></td>
+				<td th:unless="${canView}" class="text-muted">비공개</td>
 				<td>
-					<span class="badge"
+					<span th:if="${canView}" class="badge"
 						th:classappend="${question.severity == '긴급'} ? ' bg-danger' : (${question.severity == '높음'} ? ' bg-warning text-dark' : (${question.severity == '보통'} ? ' bg-secondary' : ' bg-light text-dark'))"
 						th:text="${question.severity != null ? question.severity : '-'}"></span>
+					<span th:unless="${canView}" class="text-muted">비공개</span>
 				</td>
 				<td>
 					<span th:if="${#lists.isEmpty(question.answerList)}" class="badge bg-light text-dark">미답변</span>

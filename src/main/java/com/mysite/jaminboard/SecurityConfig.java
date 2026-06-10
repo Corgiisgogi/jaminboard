@@ -32,7 +32,12 @@ public class SecurityConfig {
 			.formLogin(form -> form
 				.loginPage("/user/login")
 				.loginProcessingUrl("/user/login")
-				.defaultSuccessUrl("/question/list", true))
+				.defaultSuccessUrl("/question/list", true)
+				.failureHandler((request, response, exception) -> {
+					String target = "admin".equals(request.getParameter("loginType"))
+							? "/admin/login?error" : "/user/login?error";
+					response.sendRedirect(request.getContextPath() + target);
+				}))
 			.logout(logout -> logout
 				.logoutUrl("/user/logout")
 				.logoutSuccessUrl("/question/list")

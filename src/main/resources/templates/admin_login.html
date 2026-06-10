@@ -8,6 +8,7 @@ th:replace="~{layout :: layout(~{::section})}">
 		<div class="card-body">
 			<div th:if="${param.error}" class="alert alert-danger">아이디 또는 비밀번호가 올바르지 않습니다.</div>
 			<form th:action="@{/user/login}" method="post">
+				<input type="hidden" name="loginType" value="admin">
 				<div class="mb-3">
 					<label for="username" class="form-label">관리자 ID</label>
 					<input type="text" name="username" id="username" class="form-control" required>

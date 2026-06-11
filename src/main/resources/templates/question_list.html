@@ -4,33 +4,57 @@ th:replace="~{layout :: layout(~{::section})}">
 
 <section class="container my-3">
 	<div class="d-flex justify-content-between align-items-center mb-3">
-		<h2>수업 질문 게시판</h2>
-		<a th:href="@{/question/create}" class="btn btn-primary">질문 등록하기</a>
+		<h2>장비 고객 문의 게시판</h2>
+		<a th:href="@{/question/create}" class="btn btn-primary" th:if="${isLogin}">문의 등록하기</a>
 	</div>
-	<table class="table table-bordered table-hover text-center">
+	<table class="table table-bordered table-hover text-center align-middle">
 		<thead class="table-dark">
 			<tr>
 				<th>번호</th>
 				<th>제목</th>
+				<th>장비명</th>
+				<th>발생일</th>
+				<th>심각도</th>
+				<th>답변</th>
 				<th>작성일</th>
-				<th>답변 개수</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr th:if="${#lists.isEmpty(questionList)}">
-				<td colspan="4">등록된 게시글이 없습니다.</td>
+				<td colspan="7">등록된 게시글이 없습니다.</td>
 			</tr>
-			<tr th:each="question, loop : ${questionList}">
+			<!-- 열람 가능: 공개글 이거나, 관리자 이거나, 작성자 본인 -->
+			<tr th:each="question, loop : ${questionList}"
+				th:with="canView=${!question.secret or isAdmin or (loginUser != null and question.author != null and loginUser.username == question.author.username)}">
 				<td th:text="${loop.count}"></td>
 				<td class="text-start">
-					<a th:href="@{|/question/detail/${question.id}|}" th:text="${question.subject}"></a>
+					<a th:if="${canView}" th:href="@{|/question/detail/${question.id}|}">
+						<span th:if="${question.secret}">🔒 </span>
+						<span th:text="${question.subject}"></span>
+					</a>
+					<span th:unless="${canView}" class="text-muted">🔒 비밀글입니다</span>
+				</td>
+				<td th:if="${canView}" th:text="${question.equipmentName}"></td>
+				<td th:unless="${canView}" class="text-muted">비공개</td>
+				<td th:if="${canView}" th:text="${question.occurredDate != null ? #temporals.format(question.occurredDate, 'yyyy-MM-dd') : '-'}"></td>
+				<td th:unless="${canView}" class="text-muted">비공개</td>
+				<td>
+					<span th:if="${canView}" class="badge"
+						th:classappend="${question.severity == '긴급'} ? ' bg-danger' : (${question.severity == '높음'} ? ' bg-warning text-dark' : (${question.severity == '보통'} ? ' bg-secondary' : ' bg-light text-dark'))"
+						th:text="${question.severity != null ? question.severity : '-'}"></span>
+					<span th:unless="${canView}" class="text-muted">비공개</span>
+				</td>
+				<td>
+					<th:block th:if="${canView}">
+						<span th:if="${#lists.isEmpty(question.answerList)}" class="badge bg-light text-dark">미답변</span>
+						<span th:unless="${#lists.isEmpty(question.answerList)}" class="badge bg-success">답변완료</span>
+					</th:block>
+					<span th:unless="${canView}" class="text-muted">비공개</span>
 				</td>
 				<td th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}"></td>
-				<td th:text="${#lists.size(question.answerList)}"></td>
 			</tr>
 		</tbody>
 	</table>
-
 </section>
 
 </html>

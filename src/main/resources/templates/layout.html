@@ -20,9 +20,19 @@
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
 		<div class="container-fluid">
 			<a class="navbar-brand" th:href="@{/question/list}">박재민 게시판</a>
+			<div class="navbar-nav me-auto">
+				<a class="nav-link" th:href="@{/question/list}">문의 목록</a>
+				<a class="nav-link" th:href="@{/question/create}" th:if="${isLogin}">문의 등록</a>
+			</div>
 			<div class="navbar-nav">
-				<a class="nav-link" th:href="@{/question/list}">게시판 목록</a>
-				<a class="nav-link" th:href="@{/question/create}">질문 등록</a>
+				<a class="nav-link" th:href="@{/admin/login}" th:if="${!isLogin}">관리자</a>
+				<a class="nav-link" th:href="@{/user/login}" th:if="${!isLogin}">로그인</a>
+				<a class="nav-link" th:href="@{/user/signup}" th:if="${!isLogin}">회원가입</a>
+				<span class="navbar-text text-light me-2" th:if="${isLogin}"
+					th:text="|${loginUser != null ? loginUser.username : ''} 님${isAdmin ? ' (관리자)' : ''}|"></span>
+				<form th:if="${isLogin}" th:action="@{/user/logout}" method="post" class="d-inline">
+					<button type="submit" class="btn btn-outline-light btn-sm">로그아웃</button>
+				</form>
 			</div>
 		</div>
 	</nav>

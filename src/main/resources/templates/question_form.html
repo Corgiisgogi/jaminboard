@@ -2,23 +2,58 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
 th:replace="~{layout :: layout(~{::section})}">
 
-<section class="container my-3">
-	<h2 class="border-bottom py-2">질문 등록</h2>
+<section class="container my-3" style="max-width: 720px;">
+	<h2 class="border-bottom py-2">장비 오류 문의 등록</h2>
 	<form th:action="@{/question/create}" method="post">
 		<div class="mb-3">
 			<label for="subject" class="form-label">제목</label>
-			<input type="text" name="subject" id="subject" class="form-control">
+			<input type="text" name="subject" id="subject" class="form-control" required>
 		</div>
-
+		<div class="row">
+			<div class="col-md-6 mb-3">
+				<label for="equipmentName" class="form-label">장비명/모델명</label>
+				<input type="text" name="equipmentName" id="equipmentName" class="form-control">
+			</div>
+			<div class="col-md-6 mb-3">
+				<label for="softwareVersion" class="form-label">소프트웨어/펌웨어 버전</label>
+				<input type="text" name="softwareVersion" id="softwareVersion" class="form-control">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-4 mb-3">
+				<label for="occurredDate" class="form-label">발생 일자</label>
+				<input type="date" name="occurredDate" id="occurredDate" class="form-control">
+			</div>
+			<div class="col-md-4 mb-3">
+				<label for="severity" class="form-label">심각도</label>
+				<select name="severity" id="severity" class="form-select">
+					<option value="낮음">낮음</option>
+					<option value="보통" selected>보통</option>
+					<option value="높음">높음</option>
+					<option value="긴급">긴급</option>
+				</select>
+			</div>
+			<div class="col-md-4 mb-3">
+				<label for="errorType" class="form-label">오류 유형</label>
+				<select name="errorType" id="errorType" class="form-select">
+					<option value="설치">설치</option>
+					<option value="실행" selected>실행</option>
+					<option value="네트워크">네트워크</option>
+					<option value="기타">기타</option>
+				</select>
+			</div>
+		</div>
 		<div class="mb-3">
-			<label for="content" class="form-label">내용</label>
-			<textarea name="content" id="content" class="form-control" rows="10"></textarea>
+			<label for="content" class="form-label">오류 증상 (상세)</label>
+			<textarea name="content" id="content" class="form-control" rows="8" required></textarea>
 		</div>
-
-		<input type="submit" value="저장하기" class="btn btn-primary my-2">
-		<a th:href="@{/question/list}" class="btn btn-secondary my-2">목록</a>
+		<div class="form-check mb-3">
+			<input type="checkbox" name="secret" id="secret" value="true" class="form-check-input">
+			<label for="secret" class="form-check-label">비밀글로 등록 (작성자와 관리자만 열람)</label>
+		</div>
+		<button type="submit" class="btn btn-primary">저장하기</button>
+		<a th:href="@{/question/list}" class="btn btn-secondary">목록</a>
 	</form>
-
 </section>
 
 </html>

@@ -1,7 +1,261 @@
+/* =========================================================
+   박재민 게시판 — 장비 고객 문의 게시판
+   로컬 전용 스타일 (외부 폰트/CDN 미사용, Bootstrap 위에 보강)
+   기술 지원 데스크 무드: slate 베이스 + teal 액센트
+   ========================================================= */
+
+:root {
+	--ink:        #1f2a37;   /* 본문 텍스트 */
+	--ink-soft:   #5b6b7b;   /* 보조 텍스트 */
+	--line:       #e3e8ee;   /* 경계선 */
+	--panel:      #ffffff;   /* 카드/표 배경 */
+	--bg:         #eef2f6;   /* 페이지 배경 */
+	--brand:      #0f1b2d;   /* 네비/헤더 딥 슬레이트 */
+	--accent:     #0d9488;   /* teal 액센트 */
+	--accent-ink: #0b7c72;
+	--shadow:     0 1px 2px rgba(15, 27, 45, .06), 0 8px 24px rgba(15, 27, 45, .06);
+	--radius:     .65rem;
+}
+
+/* ---- 베이스 ---- */
+body {
+	background:
+		radial-gradient(1200px 400px at 100% -10%, rgba(13, 148, 136, .06), transparent 60%),
+		var(--bg);
+	color: var(--ink);
+	font-family: "Segoe UI", "Malgun Gothic", "Apple SD Gothic Neo",
+		system-ui, -apple-system, "Helvetica Neue", sans-serif;
+	letter-spacing: -0.01em;
+	min-height: 100vh;
+}
+
+/* 본문 영역 살짝 위로 띄우는 컨테이너 호흡 */
+section.container,
+section.container-fluid {
+	padding-bottom: 3rem;
+}
+
+/* ---- 타이포 ---- */
+h2 {
+	font-weight: 700;
+	letter-spacing: -0.025em;
+	color: var(--ink);
+}
+h5 {
+	font-weight: 600;
+	color: var(--ink);
+}
+.text-muted { color: var(--ink-soft) !important; }
+
+/* 섹션 제목 밑줄을 액센트로 */
+.border-bottom {
+	border-bottom: 1px solid var(--line) !important;
+}
+h2.border-bottom,
+h5.border-bottom {
+	position: relative;
+	border-bottom: 2px solid var(--line) !important;
+}
+h2.border-bottom::after,
+h5.border-bottom::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	bottom: -2px;
+	width: 56px;
+	height: 2px;
+	background: var(--accent);
+}
+
+/* ---- 네비게이션 ---- */
+.navbar.bg-dark {
+	background: linear-gradient(180deg, #142337, var(--brand)) !important;
+	border-bottom: 3px solid var(--accent);
+	box-shadow: 0 2px 12px rgba(15, 27, 45, .18);
+}
+.navbar-brand {
+	font-weight: 800;
+	letter-spacing: -0.02em;
+}
+.navbar-brand::before {
+	content: "⛭";
+	margin-right: .4rem;
+	color: var(--accent);
+	font-weight: 400;
+}
+.navbar .nav-link {
+	border-radius: .4rem;
+	padding-left: .7rem !important;
+	padding-right: .7rem !important;
+	transition: background-color .15s ease, color .15s ease;
+}
+.navbar .nav-link:hover {
+	background: rgba(255, 255, 255, .08);
+	color: #fff;
+}
+.navbar-text {
+	font-weight: 600;
+}
+
+/* ---- 카드 ---- */
+.card {
+	border: 1px solid var(--line);
+	border-radius: var(--radius);
+	background: var(--panel);
+	box-shadow: var(--shadow);
+	overflow: hidden;
+}
+.card-header {
+	font-weight: 700;
+	letter-spacing: -0.01em;
+}
+.card-body { padding: 1.4rem 1.5rem; }
+.card-text { color: var(--ink); line-height: 1.7; }
+
+/* 상세 메타 표 */
+.card .table-sm th {
+	width: 160px;
+	color: var(--ink-soft);
+	font-weight: 600;
+	background: #f7f9fb;
+	white-space: nowrap;
+}
+.card .table-sm td { color: var(--ink); }
+.card .table-sm th,
+.card .table-sm td {
+	vertical-align: middle;
+	border-color: var(--line);
+}
+
+/* ---- 목록 표 ---- */
+.table {
+	background: var(--panel);
+	border-radius: var(--radius);
+	overflow: hidden;
+	box-shadow: var(--shadow);
+	border-color: var(--line);
+}
+.table > :not(caption) > * > * {
+	border-color: var(--line);
+}
+.table-dark {
+	--bs-table-bg: var(--brand);
+}
+.table thead th {
+	font-weight: 600;
+	letter-spacing: .01em;
+	text-transform: none;
+	padding-top: .8rem;
+	padding-bottom: .8rem;
+}
+.table-hover > tbody > tr:hover > * {
+	background-color: rgba(13, 148, 136, .06);
+}
+.table tbody td { padding-top: .75rem; padding-bottom: .75rem; }
+.table tbody td a {
+	color: var(--ink);
+	font-weight: 600;
+	text-decoration: none;
+}
+.table tbody td a:hover {
+	color: var(--accent-ink);
+	text-decoration: underline;
+}
+
+/* 빈 목록 안내 셀 강조 */
+.table tbody tr td[colspan] {
+	color: var(--ink-soft);
+	padding: 2.5rem 1rem;
+	font-style: normal;
+}
+
+/* ---- 배지 ---- */
+.badge {
+	font-weight: 600;
+	letter-spacing: .01em;
+	border-radius: 999px;
+	padding: .4em .7em;
+}
+/* 부드러운 그림자 톤의 라이트 배지 (작성일/메타) */
+.badge.bg-light {
+	border: 1px solid var(--line);
+}
+
+/* ---- 버튼 ---- */
+.btn {
+	border-radius: .5rem;
+	font-weight: 600;
+	letter-spacing: -0.01em;
+	padding: .5rem 1.05rem;
+	transition: transform .08s ease, box-shadow .15s ease, filter .15s ease;
+}
+.btn:active { transform: translateY(1px); }
+.btn-primary {
+	--bs-btn-bg: var(--accent);
+	--bs-btn-border-color: var(--accent);
+	--bs-btn-hover-bg: var(--accent-ink);
+	--bs-btn-hover-border-color: var(--accent-ink);
+	--bs-btn-active-bg: var(--accent-ink);
+	--bs-btn-active-border-color: var(--accent-ink);
+	box-shadow: 0 4px 12px rgba(13, 148, 136, .25);
+}
+.btn-dark {
+	--bs-btn-bg: var(--brand);
+	--bs-btn-border-color: var(--brand);
+	--bs-btn-hover-bg: #1b3050;
+	--bs-btn-hover-border-color: #1b3050;
+}
+.btn + .btn,
+.btn + .a,
+.btn + a.btn { margin-left: .35rem; }
+
+/* ---- 폼 ---- */
+.form-label {
+	font-weight: 600;
+	color: var(--ink);
+	margin-bottom: .35rem;
+}
+.form-control,
+.form-select {
+	border-color: var(--line);
+	border-radius: .5rem;
+	padding: .55rem .8rem;
+}
+.form-control:focus,
+.form-select:focus {
+	border-color: var(--accent);
+	box-shadow: 0 0 0 .2rem rgba(13, 148, 136, .15);
+}
 textarea {
 	width: 100%;
 }
-
+textarea.form-control { line-height: 1.6; }
 input[type=submit] {
-	margin-top:10px;
+	margin-top: 10px;
+}
+
+/* 폼/로그인 카드형 섹션을 살짝 띄워 보이게 */
+section.container[style*="max-width"] {
+	margin-top: 1.5rem;
+}
+
+/* ---- 알림 ---- */
+.alert {
+	border-radius: var(--radius);
+	border: 1px solid var(--line);
+}
+.alert-secondary {
+	background: #f3f6f9;
+	color: var(--ink-soft);
+}
+.alert-danger {
+	background: #fdecec;
+	border-color: #f6c9c9;
+	color: #9b2226;
+}
+
+/* ---- 반응형 자잘한 정리 ---- */
+@media (max-width: 575.98px) {
+	.card-body { padding: 1.1rem 1.1rem; }
+	h2 { font-size: 1.45rem; }
 }

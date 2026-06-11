@@ -38,3 +38,4 @@ out/
 
 ### OS / runtime ###
 *.log
+*.err
